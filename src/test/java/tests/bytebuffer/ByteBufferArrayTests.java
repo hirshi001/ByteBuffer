@@ -1,9 +1,9 @@
 package tests.bytebuffer;
 
-import com.hirshi001.bufferfactory.BufferFactory;
-import com.hirshi001.bufferfactory.DefaultBufferFactory;
-import com.hirshi001.buffers.ArrayBackedByteBuffer;
-import com.hirshi001.buffers.ByteBuffer;
+import com.hirshi001.buffer.bufferfactory.BufferFactory;
+import com.hirshi001.buffer.bufferfactory.DefaultBufferFactory;
+import com.hirshi001.buffer.buffers.ArrayBackedByteBuffer;
+import com.hirshi001.buffer.buffers.ByteBuffer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

@@ -1,7 +1,7 @@
-package com.hirshi001.buffers;
+package com.hirshi001.buffer.buffers;
 
 
-import com.hirshi001.bufferfactory.BufferFactory;
+import com.hirshi001.buffer.bufferfactory.BufferFactory;
 
 public abstract class AbstractByteBuffer implements ByteBuffer {
 

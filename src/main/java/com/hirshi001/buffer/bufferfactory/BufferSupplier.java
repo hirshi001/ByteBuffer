@@ -1,7 +1,7 @@
-package com.hirshi001.bufferfactory;
+package com.hirshi001.buffer.bufferfactory;
 
 
-import com.hirshi001.buffers.ByteBuffer;
+import com.hirshi001.buffer.buffers.ByteBuffer;
 
 public interface BufferSupplier {
 
