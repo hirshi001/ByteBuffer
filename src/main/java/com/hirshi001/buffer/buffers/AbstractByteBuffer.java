@@ -144,7 +144,10 @@ public abstract class AbstractByteBuffer implements ByteBuffer {
 
     @Override
     public ByteBuffer writeBytes(ByteBuffer src) {
-        return writeBytes(src, 0, src.size());
+        while(src.readableBytes()>0){
+            writeByte(src.readByte());
+        }
+        return this;
     }
 
     @Override

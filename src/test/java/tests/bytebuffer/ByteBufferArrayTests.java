@@ -4,8 +4,11 @@ import com.hirshi001.buffer.bufferfactory.BufferFactory;
 import com.hirshi001.buffer.bufferfactory.DefaultBufferFactory;
 import com.hirshi001.buffer.buffers.ArrayBackedByteBuffer;
 import com.hirshi001.buffer.buffers.ByteBuffer;
+import com.hirshi001.buffer.buffers.CircularArrayBackedByteBuffer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ByteBufferArrayTests {
 
@@ -28,13 +31,13 @@ public class ByteBufferArrayTests {
         byte[] array = new byte[3];
         buffer.readBytes(array);
 
-        assert array[0] == 10;
-        assert array[1] == 20;
-        assert array[2] == 30;
+        assertEquals(10, array[0]);
+        assertEquals(20, array[1]);
+        assertEquals(30, array[2]);
 
-        assert buffer.readableBytes() == 0;
-        assert buffer.writableBytes() == 7;
-        assert buffer.size() == 10;
+        assertEquals(0, buffer.readableBytes());
+        assertEquals(7, buffer.writableBytes());
+        assertEquals(10, buffer.size());
     }
 
     @Test
@@ -44,13 +47,13 @@ public class ByteBufferArrayTests {
         byte[] array = new byte[]{10, 20, 30};
         buffer.writeBytes(array);
 
-        assert buffer.readByte() == 10;
-        assert buffer.readByte() == 20;
-        assert buffer.readByte() == 30;
+        assertEquals(10, buffer.readByte());
+        assertEquals(20, buffer.readByte());
+        assertEquals(30, buffer.readByte());
 
-        assert buffer.readableBytes() == 0;
-        assert buffer.writableBytes() == 7;
-        assert buffer.size() == 10;
+        assertEquals(0, buffer.readableBytes());
+        assertEquals(7, buffer.writableBytes());
+        assertEquals(10, buffer.size());
     }
 
     @Test
@@ -66,13 +69,13 @@ public class ByteBufferArrayTests {
         buffer.readBytes(array2);
 
         //Assert
-        assert array2[0] == 10;
-        assert array2[1] == 20;
-        assert array2[2] == 30;
+        assertEquals(10, array2[0]);
+        assertEquals(20, array2[1]);
+        assertEquals(30, array2[2]);
 
-        assert buffer.readableBytes() == 0;
-        assert buffer.writableBytes() == 7;
-        assert buffer.size() == 10;
+        assertEquals(0, buffer.readableBytes());
+        assertEquals(7, buffer.writableBytes());
+        assertEquals(10, buffer.size());
     }
 
     @Test
@@ -83,18 +86,18 @@ public class ByteBufferArrayTests {
             buffer1.writeByte(i);
         }
 
-        assert buffer1.readableBytes() == 10;
+        assertEquals(10, buffer1.readableBytes());
 
         buffer2.writeBytes(buffer1);
 
-        assert buffer2.readableBytes() == 10;
-        assert buffer1.readableBytes() == 0;
+        assertEquals(10, buffer2.readableBytes());
+        assertEquals(0, buffer1.readableBytes());
 
         for(int i = 0; i < 10; i++){
-            assert buffer2.readByte() == i;
+            assertEquals(i, buffer2.readByte());
         }
 
-        assert buffer2.readableBytes() == 0;
+        assertEquals(0, buffer2.readableBytes());
     }
 
 
@@ -106,18 +109,18 @@ public class ByteBufferArrayTests {
             buffer1.writeByte(i);
         }
 
-        assert buffer1.readableBytes() == 10;
+        assertEquals(10, buffer1.readableBytes());
 
         buffer2.writeBytes(buffer1, 7);
 
-        assert buffer2.readableBytes() == 7;
-        assert buffer1.readableBytes() == 3;
+        assertEquals(7, buffer2.readableBytes());
+        assertEquals(3, buffer1.readableBytes());
 
         for(int i = 0; i < 7; i++){
-            assert buffer2.readByte() == i;
+            assertEquals(i, buffer2.readByte());
         }
 
-        assert buffer2.readableBytes() == 0;
+        assertEquals(0, buffer2.readableBytes());
     }
 
 
@@ -130,18 +133,18 @@ public class ByteBufferArrayTests {
             buffer1.writeByte(i);
         }
 
-        assert buffer1.readableBytes() == size;
+        assertEquals(size, buffer1.readableBytes());
 
         buffer2.writeBytes(buffer1, srcIndex, length);
 
-        assert buffer2.readableBytes() == length;
-        assert buffer1.readableBytes() == size;
+        assertEquals(length, buffer2.readableBytes());
+        assertEquals(size, buffer1.readableBytes());
 
         for(int i = srcIndex; i < srcIndex+length; i++){
-            assert buffer2.readByte() == i;
+            assertEquals(i, buffer2.readByte());
         }
 
-        assert buffer2.readableBytes() == 0;
+        assertEquals(0, buffer2.readableBytes());
     }
 
 
