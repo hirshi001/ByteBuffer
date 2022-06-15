@@ -40,7 +40,8 @@ public abstract class AbstractByteBuffer implements ByteBuffer {
     @Override
     public ByteBuffer readBytes(int length) {
         ByteBuffer src = factory.buffer(length);
-        return readBytes(src, length);
+        readBytes(src, length);
+        return src;
     }
 
     @Override
