@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="tests.bytebuffer.ByteBufferTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2022-06-13T03:22:40" hostname="Hrishikeshs-MacBook-Pro.local" time="0.015">
-  <properties/>
-  <testcase name="EnsureWritableTest2()" classname="tests.bytebuffer.ByteBufferTest" time="0.015"/>
-  <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>

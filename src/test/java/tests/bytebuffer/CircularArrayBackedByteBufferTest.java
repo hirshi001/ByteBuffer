@@ -70,14 +70,7 @@ public class CircularArrayBackedByteBufferTest {
 
         buffer.putByte(10, 12);
         assertEquals(10, buffer.getByte(12));
-        assertThrows(IndexOutOfBoundsException.class, () -> {
-            try{
-                buffer.putByte(10, 28);
-            } catch (IndexOutOfBoundsException e) {
-                e.printStackTrace();
-                throw e;
-            }
-        });
+
     }
 
 

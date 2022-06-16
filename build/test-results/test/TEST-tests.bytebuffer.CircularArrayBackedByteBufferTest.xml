@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="tests.bytebuffer.CircularArrayBackedByteBufferTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2022-06-16T05:08:42" hostname="Hrishikeshs-MacBook-Pro.local" time="0.016">
+  <properties/>
+  <testcase name="putGetTest()" classname="tests.bytebuffer.CircularArrayBackedByteBufferTest" time="0.016"/>
+  <system-out><![CDATA[[2, 2, 2, 2, 2, 2, 2, 2, 2, 2]
+7
+2
+17
+22
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

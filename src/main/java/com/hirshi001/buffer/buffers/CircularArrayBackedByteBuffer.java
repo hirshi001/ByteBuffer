@@ -114,7 +114,7 @@ public class CircularArrayBackedByteBuffer extends AbstractByteBuffer{
                 System.arraycopy(bytes, arrayReaderIndex, newBytes, 0, bytes.length - arrayReaderIndex);
                 System.arraycopy(bytes, 0, newBytes, bytes.length - arrayReaderIndex, arrayWriterIndex);
                 arrayReaderIndex = 0;
-                arrayWriterIndex = arrayReaderIndex + readableBytes();
+                arrayWriterIndex = readableBytes();
             }
             bytes = newBytes;
         }
@@ -166,24 +166,17 @@ public class CircularArrayBackedByteBuffer extends AbstractByteBuffer{
 
     @Override
     public ByteBuffer putByte(int b, int index) {
-        int minIndex, maxIndex;
-        if(arrayWriterIndex >= arrayReaderIndex) {
-            int diff = bytes.length - arrayWriterIndex + arrayReaderIndex;
-            minIndex = readerIndex - diff;
-            maxIndex = writerIndex + diff;
-        } else{
-            int diff = arrayReaderIndex - arrayWriterIndex;
-            minIndex = readerIndex - diff;
-            maxIndex = writerIndex + diff;
-        }
-        if(index>=minIndex && index<=maxIndex)bytes[index%bytes.length] = (byte) b;
-        else throw new IndexOutOfBoundsException("index: " + index + " minIndex: " + minIndex + " maxIndex: " + maxIndex + " arrayReaderIndex: " + arrayReaderIndex + " arrayWriterIndex: " + arrayWriterIndex + " readerIndex: " + readerIndex + " writerIndex: " + writerIndex);
+        bytes[getIndexInArray(index)] = (byte) b;
         return this;
     }
 
     @Override
     public byte getByte(int index) {
-        return bytes[index%bytes.length];
+        return bytes[getIndexInArray(index)];
+    }
+
+    private int getIndexInArray(int index){
+        return (index-readerIndex+arrayReaderIndex)%bytes.length;
     }
 
     @Override
