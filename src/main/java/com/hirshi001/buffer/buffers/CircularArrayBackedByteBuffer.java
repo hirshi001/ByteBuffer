@@ -52,14 +52,14 @@ public class CircularArrayBackedByteBuffer extends AbstractByteBuffer{
     @Override
     public ByteBuffer readerIndex(int readerIndex) {
         this.readerIndex = readerIndex;
-        this.arrayReaderIndex = readerIndex%bytes.length;
+        this.arrayReaderIndex = getIndexInArray(readerIndex);
         return this;
     }
 
     @Override
     public ByteBuffer writerIndex(int writerIndex) {
         this.writerIndex = writerIndex;
-        this.arrayWriterIndex = writerIndex%bytes.length;
+        this.arrayWriterIndex = getIndexInArray(writerIndex);
         return this;
     }
 
