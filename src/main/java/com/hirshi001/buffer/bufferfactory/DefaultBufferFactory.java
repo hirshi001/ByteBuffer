@@ -3,42 +3,25 @@ package com.hirshi001.buffer.bufferfactory;
 
 import com.hirshi001.buffer.buffers.ArrayBackedByteBuffer;
 import com.hirshi001.buffer.buffers.ByteBuffer;
+import com.hirshi001.buffer.buffers.CircularArrayBackedByteBuffer;
 
 import java.util.Comparator;
 import java.util.TreeSet;
 
 public class DefaultBufferFactory implements BufferFactory {
 
-    private BufferSupplier bufferSupplier;
-    private TreeSet<ByteBuffer> buffers;
 
-
-    public DefaultBufferFactory(BufferSupplier bufferSupplier) {
-        this.bufferSupplier = bufferSupplier;
-        this.buffers = new TreeSet<>(new Comparator<ByteBuffer>() {
-            @Override
-            public int compare(ByteBuffer o1, ByteBuffer o2) {
-                return o1.size() - o2.size();
-            }
-        });
+    public DefaultBufferFactory() {
     }
 
     private ByteBuffer newBuffer(int size){
-        if(buffers.size() == 0){
-            return bufferSupplier.getBuffer(this, size);
-        }
-        ByteBuffer buffer = buffers.first();
-        buffers.remove(buffer);
-        buffer.clear();
-        buffer.ensureWritable(size);
-        return bufferSupplier.getBuffer(this, size);
-
+        return new ArrayBackedByteBuffer(size, this);
     }
 
 
     @Override
     public void recycle(ByteBuffer buffer) {
-        buffers.add(buffer);
+
     }
 
     private ByteBuffer newBuffer(){
@@ -67,6 +50,26 @@ public class DefaultBufferFactory implements BufferFactory {
         ByteBuffer buffer = newBuffer(length);
         buffer.writeBytes(bytes, offset, length);
         return buffer;
+    }
+
+    @Override
+    public ByteBuffer tryDirectBuffer(int size) {
+        return newBuffer(size);
+    }
+
+    @Override
+    public ByteBuffer circularBuffer() {
+        return circularBuffer(16);
+    }
+
+    @Override
+    public ByteBuffer circularBuffer(int size) {
+        return new CircularArrayBackedByteBuffer(size, this);
+    }
+
+    @Override
+    public ByteBuffer circularBuffer(byte[] bytes) {
+        return new CircularArrayBackedByteBuffer(bytes, this);
     }
 
     @Override
