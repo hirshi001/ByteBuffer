@@ -5,6 +5,7 @@ import com.hirshi001.buffer.bufferfactory.DefaultBufferFactory;
 import com.hirshi001.buffer.buffers.ArrayBackedByteBuffer;
 import com.hirshi001.buffer.buffers.ByteBuffer;
 import com.hirshi001.buffer.buffers.CircularArrayBackedByteBuffer;
+import com.hirshi001.buffer.byteorder.ByteOrder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -17,7 +18,7 @@ public class ByteBufferArrayTests {
 
     @BeforeEach
     public void setup(){
-        bufferFactory = new DefaultBufferFactory((bufferFactory, size) -> new ArrayBackedByteBuffer(size, bufferFactory));
+        bufferFactory = new DefaultBufferFactory();
     }
 
     @Test

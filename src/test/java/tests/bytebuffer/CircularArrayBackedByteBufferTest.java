@@ -19,12 +19,12 @@ public class CircularArrayBackedByteBufferTest {
     @BeforeEach
     public void setup() {
         //switch out with whatever ByteBuffer you want to test
-        bufferFactory = new DefaultBufferFactory((bufferFactory, size) -> new CircularArrayBackedByteBuffer(size, bufferFactory));
+        bufferFactory = new DefaultBufferFactory();
     }
 
     @Test
     public void BasicTest(){
-        ByteBuffer buffer = bufferFactory.buffer(10);
+        ByteBuffer buffer = bufferFactory.circularBuffer(10);
 
         for(int i=0;i<100;i++){
             buffer.writeByte(i);
@@ -37,16 +37,17 @@ public class CircularArrayBackedByteBufferTest {
 
     @Test
     public void circularTest(){
-        ByteBuffer buffer = bufferFactory.buffer(15);
+        ByteBuffer buffer = bufferFactory.circularBuffer(15);
         buffer.writerIndex(5);
         buffer.readerIndex(5);
+
         for(int i=0;i<25;i++){
             buffer.writeByte(i);
         }
 
         for(int j=0;j<10;j++) {
             for (int i = 0; i < 25; i++) {
-                assertEquals(buffer.readByte(), i);
+                assertEquals(i, buffer.readByte());
                 buffer.writeByte(i);
             }
         }
@@ -54,7 +55,7 @@ public class CircularArrayBackedByteBufferTest {
 
     @Test
     public void putGetTest(){
-        ByteBuffer buffer = bufferFactory.buffer(10);
+        ByteBuffer buffer = bufferFactory.circularBuffer(10);
         for(int i=0;i<5;i++) buffer.writeByte(1);
         for(int i=0;i<17;i++){
             buffer.writeByte(2);

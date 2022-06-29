@@ -13,7 +13,6 @@ public class CircularArrayBackedByteBuffer extends AbstractByteBuffer{
     private int arrayWriterIndex;
     private int readerMark;
     private int writerMark;
-    private final Object lock = new Object();
 
     public CircularArrayBackedByteBuffer(int size, BufferFactory factory) {
         this(new byte[size], factory);
@@ -51,15 +50,15 @@ public class CircularArrayBackedByteBuffer extends AbstractByteBuffer{
 
     @Override
     public ByteBuffer readerIndex(int readerIndex) {
-        this.readerIndex = readerIndex;
         this.arrayReaderIndex = getIndexInArray(readerIndex);
+        this.readerIndex = readerIndex;
         return this;
     }
 
     @Override
     public ByteBuffer writerIndex(int writerIndex) {
-        this.writerIndex = writerIndex;
         this.arrayWriterIndex = getIndexInArray(writerIndex);
+        this.writerIndex = writerIndex;
         return this;
     }
 
@@ -123,7 +122,6 @@ public class CircularArrayBackedByteBuffer extends AbstractByteBuffer{
                 System.arraycopy(bytes, 0, newBytes, bytes.length - arrayReaderIndex, arrayReaderIndex);
                 arrayReaderIndex = 0;
                 arrayWriterIndex = readableBytes();
-
                  */
             }
             bytes = newBytes;

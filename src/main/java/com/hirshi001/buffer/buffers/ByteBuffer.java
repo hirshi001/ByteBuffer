@@ -2,8 +2,9 @@ package com.hirshi001.buffer.buffers;
 
 
 import com.hirshi001.buffer.bufferfactory.BufferFactory;
+import com.hirshi001.buffer.byteorder.*;
 
-public interface ByteBuffer{
+public interface ByteBuffer extends ByteWriter<ByteBuffer>, ByteReader, BytePutter<ByteBuffer>, ByteGetter {
 
     public static final int TRUE = 1, FALSE = 0;
 
@@ -32,6 +33,19 @@ public interface ByteBuffer{
      * can return to the pool
      */
     void release();
+
+    /**
+     *
+     * @return The ByteOrder used to read/write bytes from this buffer
+     */
+    ByteOrder order();
+
+    /**
+     *
+     * @param order The ByteOrder to use for reading/writing bytes from this buffer
+     * @return
+     */
+    ByteBuffer order(ByteOrder order);
 
     /**
      *

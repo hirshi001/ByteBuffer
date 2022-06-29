@@ -2,10 +2,12 @@ package com.hirshi001.buffer.buffers;
 
 
 import com.hirshi001.buffer.bufferfactory.BufferFactory;
+import com.hirshi001.buffer.byteorder.ByteOrder;
 
 public abstract class AbstractByteBuffer implements ByteBuffer {
 
     private BufferFactory factory;
+    private ByteOrder order = ByteOrder.LITTLE_ENDIAN;
 
     public AbstractByteBuffer(BufferFactory factory) {
         this.factory = factory;
@@ -23,19 +25,39 @@ public abstract class AbstractByteBuffer implements ByteBuffer {
     }
 
     @Override
+    public ByteOrder order() {
+        return order;
+    }
+
+    @Override
+    public ByteBuffer order(ByteOrder order) {
+        this.order = order;
+        return this;
+    }
+
+    @Override
     public void release() {
         factory.recycle(this);
     }
 
+
+
     //Subclasses implement
-    //
-    //
-    //
+    //------------------------------------------------------------------------------------------------------------------
     @Override
     public abstract ByteBuffer writeByte(int b);
 
     @Override
     public abstract byte readByte();
+
+    @Override
+    public abstract ByteBuffer putByte(int b, int index);
+
+    @Override
+    public abstract byte getByte(int index);
+    //------------------------------------------------------------------------------------------------------------------
+
+
 
     @Override
     public ByteBuffer readBytes(int length) {
@@ -46,62 +68,57 @@ public abstract class AbstractByteBuffer implements ByteBuffer {
 
     @Override
     public ByteBuffer writeInt(int i){
-        writeByte((byte)(i >> 24));
-        writeByte((byte)(i >> 16));
-        writeByte((byte)(i >> 8));
-        writeByte((byte)i);
+        order.writeInt(this, i);
         return this;
     }
 
     @Override
     public  int readInt(){
-        return (readByte() << 24) | (readByte() << 16) | (readByte() << 8) | readByte();
+        return order.readInt(this);
     }
 
     @Override
     public ByteBuffer writeLong(long l){
-        writeInt((int)(l >> 32));
-        writeInt((int)l);
+        order.writeLong(this, l);
         return this;
     }
 
     @Override
     public long readLong(){
-        return ((long)readInt() << 32) | readInt();
+        return order.readLong(this);
     }
 
     @Override
     public ByteBuffer writeShort(int s){
-        writeByte((byte)(s >> 8));
-        writeByte((byte)s);
+        order.writeShort(this, s);
         return this;
     }
 
     @Override
     public short readShort(){
-        return (short)((readByte() << 8) | readByte());
+        return order.readShort(this);
     }
 
     @Override
     public ByteBuffer writeFloat(float f){
-        writeInt(Float.floatToIntBits(f));
+        order.writeFloat(this, f);
         return this;
     }
 
     @Override
     public float readFloat(){
-        return Float.intBitsToFloat(readInt());
+        return order.readFloat(this);
     }
 
     @Override
     public ByteBuffer writeDouble(double d){
-        writeLong(Double.doubleToLongBits(d));
+        order.writeDouble(this, d);
         return this;
     }
 
     @Override
     public double readDouble(){
-        return Double.longBitsToDouble(readLong());
+        return order.readDouble(this);
     }
 
     @Override
@@ -273,14 +290,10 @@ public abstract class AbstractByteBuffer implements ByteBuffer {
 
     //--------------------------------------------------------------------------
 
-    @Override
-    public abstract ByteBuffer putByte(int b, int index);
-
-    @Override
-    public abstract byte getByte(int index);
 
     @Override
     public ByteBuffer putInt(int i, int index) {
+        order.putInt(this, i, index);
         putByte((byte) (i >> 24), index);
         putByte((byte) (i >> 16), index + 1);
         putByte((byte) (i >> 8), index + 2);
@@ -320,7 +333,8 @@ public abstract class AbstractByteBuffer implements ByteBuffer {
 
     @Override
     public ByteBuffer putBoolean(boolean b, int index) {
-        return putByte((byte) (b ? TRUE : FALSE), index);
+        putByte((byte) (b ? TRUE : FALSE), index);
+        return this;
     }
 
     @Override

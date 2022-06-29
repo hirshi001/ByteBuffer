@@ -65,6 +65,31 @@ public class ArrayBackedByteBuffer extends AbstractByteBuffer{
         return data.length;
     }
 
+
+    //------------------------------------------------------------------------------------------------------------------
+    @Override
+    public ByteBuffer writeByte(int b) {
+        ensureWritable(1);
+        data[writerIndex++] = (byte)b;
+        return this;
+    }
+
+    @Override
+    public byte readByte() {
+        return data[readerIndex++];
+    }
+    @Override
+    public ByteBuffer putByte(int b, int index) {
+        data[index] = (byte)b;
+        return this;
+    }
+
+    @Override
+    public byte getByte(int index) {
+        return data[index];
+    }
+    //------------------------------------------------------------------------------------------------------------------
+
     @Override
     public ByteBuffer writeBytes(byte[] bytes) {
         return writeBytes(bytes, 0, bytes.length);
@@ -149,128 +174,7 @@ public class ArrayBackedByteBuffer extends AbstractByteBuffer{
         return super.readBytes(dst, dstIndex, length);
     }
 
-    @Override
-    public ByteBuffer writeByte(int b) {
-        ensureWritable(1);
-        data[writerIndex++] = (byte)b;
-        return this;
-    }
 
-    @Override
-    public ByteBuffer writeInt(int i) {
-        ensureWritable(4);
-        data[writerIndex++] = (byte) (i >> 24);
-        data[writerIndex++] = (byte) (i >> 16);
-        data[writerIndex++] = (byte) (i >> 8);
-        data[writerIndex++] = (byte) i;
-        return this;
-    }
-
-    @Override
-    public ByteBuffer writeLong(long l) {
-        ensureWritable(8);
-        data[writerIndex++] = (byte) (l >> 56);
-        data[writerIndex++] = (byte) (l >> 48);
-        data[writerIndex++] = (byte) (l >> 40);
-        data[writerIndex++] = (byte) (l >> 32);
-        data[writerIndex++] = (byte) (l >> 24);
-        data[writerIndex++] = (byte) (l >> 16);
-        data[writerIndex++] = (byte) (l >> 8);
-        data[writerIndex++] = (byte) l;
-        return this;
-    }
-
-    @Override
-    public ByteBuffer writeShort(int s) {
-        ensureWritable(2);
-        data[writerIndex++] = (byte) (s >> 8);
-        data[writerIndex++] = (byte) s;
-        return this;
-    }
-
-    @Override
-    public ByteBuffer writeDouble(double d) {
-        writeLong(Double.doubleToLongBits(d));
-        return this;
-    }
-
-    @Override
-    public ByteBuffer writeFloat(float f) {
-        writeInt(Float.floatToIntBits(f));
-        return this;
-    }
-
-    @Override
-    public ByteBuffer writeBoolean(boolean b) {
-        data[writerIndex++] = (byte) (b ? TRUE : FALSE);
-        return this;
-    }
-
-    @Override
-    public ByteBuffer writeChar(int c) {
-        writeShort((short) c);
-        return this;
-    }
-
-    @Override
-    public byte readByte() {
-        return data[readerIndex++];
-    }
-
-    @Override
-    public int readInt() {
-        int i = (data[readerIndex++] & 0xff) << 24;
-        i |= (data[readerIndex++] & 0xff) << 16;
-        i |= (data[readerIndex++] & 0xff) << 8;
-        i |= data[readerIndex++] & 0xff;
-        return i;
-    }
-
-    @Override
-    public long readLong() {
-        long l = (data[readerIndex++] & 0xffL) << 56;
-        l |= (data[readerIndex++] & 0xffL) << 48;
-        l |= (data[readerIndex++] & 0xffL) << 40;
-        l |= (data[readerIndex++] & 0xffL) << 32;
-        l |= (data[readerIndex++] & 0xffL) << 24;
-        l |= (data[readerIndex++] & 0xffL) << 16;
-        l |= (data[readerIndex++] & 0xffL) << 8;
-        l |= data[readerIndex++] & 0xffL;
-        return l;
-    }
-
-    @Override
-    public short readShort() {
-        int s = (data[readerIndex++] & 0xff) << 8;
-        s |= data[readerIndex++] & 0xff;
-        return (short) s;
-    }
-
-    @Override
-    public double readDouble() {
-        return Double.longBitsToDouble(readLong());
-    }
-
-    @Override
-    public float readFloat() {
-        return Float.intBitsToFloat(readInt());
-    }
-
-    @Override
-    public boolean readBoolean() {
-        return data[readerIndex++] == TRUE;
-    }
-
-    @Override
-    public int readChar() {
-        return (char) readShort();
-    }
-
-    @Override
-    public ByteBuffer putByte(int b, int index) {
-        data[index] = (byte)b;
-        return this;
-    }
 
     @Override
     public ByteBuffer putBytes(byte[] bytes, int index) {
@@ -304,10 +208,6 @@ public class ArrayBackedByteBuffer extends AbstractByteBuffer{
         return super.putBytes(src, srcIndex, length, index);
     }
 
-    @Override
-    public byte getByte(int index) {
-        return data[index];
-    }
 
     @Override
     public ByteBuffer getBytes(byte[] dst, int index, int length) {
@@ -338,106 +238,6 @@ public class ArrayBackedByteBuffer extends AbstractByteBuffer{
             return this;
         }
         return super.getBytes(dst, dstIndex, length, index);
-    }
-
-    @Override
-    public ByteBuffer putInt(int i, int index) {
-        data[index++] = (byte) (i >>> 24);
-        data[index++] = (byte) (i >>> 16);
-        data[index++] = (byte) (i >>> 8);
-        data[index] = (byte) i;
-        return this;
-    }
-
-    @Override
-    public ByteBuffer putLong(long l, int index) {
-        data[index++] = (byte) (l >>> 56);
-        data[index++] = (byte) (l >>> 48);
-        data[index++] = (byte) (l >>> 40);
-        data[index++] = (byte) (l >>> 32);
-        data[index++] = (byte) (l >>> 24);
-        data[index++] = (byte) (l >>> 16);
-        data[index++] = (byte) (l >>> 8);
-        data[index] = (byte) l;
-        return this;
-    }
-
-    @Override
-    public ByteBuffer putShort(int s, int index) {
-        data[index++] = (byte) (s >>> 8);
-        data[index] = (byte) s;
-        return this;
-    }
-
-    @Override
-    public ByteBuffer putDouble(double d, int index) {
-        return putLong(Double.doubleToLongBits(d), index);
-    }
-
-    @Override
-    public ByteBuffer putFloat(float f, int index) {
-        return putInt(Float.floatToIntBits(f), index);
-    }
-
-    @Override
-    public ByteBuffer putBoolean(boolean b, int index) {
-        data[index] = (byte) (b ? TRUE : FALSE);
-        return this;
-    }
-
-    @Override
-    public ByteBuffer putChar(char c, int index) {
-        return putShort((short) c, index);
-    }
-
-    @Override
-    public int getInt(int index) {
-        int i = (data[index++] & 0xff) << 24;
-        i |= (data[index++] & 0xff) << 16;
-        i |= (data[index++] & 0xff) << 8;
-        i |= data[index] & 0xff;
-        return i;
-
-    }
-
-    @Override
-    public long getLong(int index) {
-        long l = (data[index++] & 0xffL) << 56;
-        l |= (data[index++] & 0xffL) << 48;
-        l |= (data[index++] & 0xffL) << 40;
-        l |= (data[index++] & 0xffL) << 32;
-        l |= (data[index++] & 0xffL) << 24;
-        l |= (data[index++] & 0xffL) << 16;
-        l |= (data[index++] & 0xffL) << 8;
-        l |= data[index] & 0xffL;
-        return l;
-    }
-
-    @Override
-    public short getShort(int index) {
-        int s = (data[index++] & 0xff) << 8;
-        s |= data[index] & 0xff;
-        return (short) s;
-    }
-
-    @Override
-    public double getDouble(int index) {
-        return Double.longBitsToDouble(getLong(index));
-    }
-
-    @Override
-    public float getFloat(int index) {
-        return Float.intBitsToFloat(getInt(index));
-    }
-
-    @Override
-    public boolean getBoolean(int index) {
-        return data[index] == TRUE;
-    }
-
-    @Override
-    public int getChar(int index) {
-        return (char) getShort(index);
     }
 
     @Override
@@ -505,4 +305,5 @@ public class ArrayBackedByteBuffer extends AbstractByteBuffer{
         writerMark = 0;
         //Arrays.fill(data, (byte) 0); // May not be necessary
     }
+
 }
