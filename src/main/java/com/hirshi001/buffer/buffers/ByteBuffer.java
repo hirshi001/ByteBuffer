@@ -1,10 +1,9 @@
 package com.hirshi001.buffer.buffers;
 
-
 import com.hirshi001.buffer.bufferfactory.BufferFactory;
 import com.hirshi001.buffer.byteorder.*;
 
-public interface ByteBuffer extends ByteWriter<ByteBuffer>, ByteReader, BytePutter<ByteBuffer>, ByteGetter {
+public interface ByteBuffer extends ByteWriter<ByteBuffer>, ByteReader, BytePutter<ByteBuffer>, ByteGetter{
 
     public static final int TRUE = 1, FALSE = 0;
 
