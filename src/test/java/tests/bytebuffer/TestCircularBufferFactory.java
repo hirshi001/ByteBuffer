@@ -3,8 +3,12 @@ package tests.bytebuffer;
 import com.hirshi001.buffer.bufferfactory.BufferFactory;
 import com.hirshi001.buffer.buffers.ByteBuffer;
 import com.hirshi001.buffer.buffers.CircularArrayBackedByteBuffer;
+import com.hirshi001.buffer.byteorder.ByteOrder;
 
 public class TestCircularBufferFactory implements BufferFactory {
+
+    ByteOrder byteOrder = ByteOrder.BIG_ENDIAN;
+
     @Override
     public ByteBuffer buffer() {
         return new CircularArrayBackedByteBuffer(16, this);
@@ -56,12 +60,18 @@ public class TestCircularBufferFactory implements BufferFactory {
     }
 
     @Override
-    public ByteBuffer duplicate(ByteBuffer buffer) {
-        return null;
+    public void recycle(ByteBuffer buffer) {
+
     }
 
     @Override
-    public void recycle(ByteBuffer buffer) {
+    public ByteOrder defaultOrder() {
+        return byteOrder;
+    }
 
+    @Override
+    public BufferFactory defaultOrder(ByteOrder order) {
+        this.byteOrder = order;
+        return this;
     }
 }

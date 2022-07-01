@@ -2,10 +2,9 @@ package tests.bytebuffer;
 
 import com.hirshi001.buffer.bufferfactory.BufferFactory;
 import com.hirshi001.buffer.bufferfactory.DefaultBufferFactory;
-import com.hirshi001.buffer.buffers.ArrayBackedByteBuffer;
 import com.hirshi001.buffer.buffers.ByteBuffer;
-import com.hirshi001.buffer.buffers.CircularArrayBackedByteBuffer;
 import com.hirshi001.buffer.byteorder.ByteOrder;
+import com.hirshi001.buffer.util.ByteBufUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -22,6 +21,7 @@ public class ByteBufferTest {
     public void setup() {
         //switch out with whatever ByteBuffer you want to test
         bufferFactory = new DefaultBufferFactory();//new TestCircularBufferFactory();
+        bufferFactory.defaultOrder(ByteOrder.BIG_ENDIAN);
     }
 
     @Test
@@ -76,6 +76,17 @@ public class ByteBufferTest {
         buffer.ensureWritable(100);
 
         assertTrue(buffer.writableBytes() >= 100, "Writable bytes is " + buffer.writableBytes() + ", expected at least 100");
+    }
+
+    @Test
+    public void VarIntTest(){
+        ByteBuffer buffer = bufferFactory.buffer(10);
+        buffer.writeInt(5);
+        assertEquals(5, buffer.readInt());
+
+        ByteBufUtil.writeVarInt(buffer, 9912);
+
+        assertEquals(9912, ByteBufUtil.readVarInt(buffer));
     }
 
 

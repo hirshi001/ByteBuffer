@@ -4,6 +4,7 @@ import com.hirshi001.buffer.bufferfactory.BufferFactory;
 import com.hirshi001.buffer.bufferfactory.DefaultBufferFactory;
 import com.hirshi001.buffer.buffers.ByteBuffer;
 import com.hirshi001.buffer.buffers.CircularArrayBackedByteBuffer;
+import com.hirshi001.buffer.byteorder.ByteOrder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -20,6 +21,7 @@ public class CircularArrayBackedByteBufferTest {
     public void setup() {
         //switch out with whatever ByteBuffer you want to test
         bufferFactory = new DefaultBufferFactory();
+        bufferFactory.defaultOrder(ByteOrder.BIG_ENDIAN);
     }
 
     @Test
