@@ -40,13 +40,16 @@ public class CircularArrayBackedByteBufferTest {
     @Test
     public void circularTest(){
         ByteBuffer buffer = bufferFactory.circularBuffer(15);
-        buffer.writerIndex(5);
-        buffer.readerIndex(5);
+        buffer.writerIndex(25);
+        buffer.readerIndex(20);
 
         for(int i=0;i<25;i++){
             buffer.writeByte(i);
         }
 
+        for(int i=0;i<5;i++){
+            assertEquals(0, buffer.readByte());
+        }
         for(int j=0;j<10;j++) {
             for (int i = 0; i < 25; i++) {
                 assertEquals(i, buffer.readByte());

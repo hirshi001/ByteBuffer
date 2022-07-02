@@ -107,9 +107,8 @@ public class CircularArrayBackedByteBuffer extends AbstractByteBuffer{
             byte[] newBytes = new byte[newSize];
             if(arrayReaderIndex < arrayWriterIndex) {
                 System.arraycopy(bytes, 0, newBytes, 0, bytes.length);
-                //arrayReaderIndex remains the same
-                //arrayWriterIndex remains the same
             }else {
+                /*
                 System.arraycopy(bytes, arrayWriterIndex, newBytes, newSize-bytes.length+arrayWriterIndex, bytes.length-arrayWriterIndex);
 
                 System.arraycopy(bytes, 0, newBytes, 0, arrayReaderIndex);
@@ -117,12 +116,12 @@ public class CircularArrayBackedByteBuffer extends AbstractByteBuffer{
                 arrayReaderIndex = newSize-bytes.length+arrayReaderIndex;
                 //something incorrect here, idk yet
 
-                /*
+
+                 */
                 System.arraycopy(bytes, arrayReaderIndex, newBytes, 0, bytes.length - arrayReaderIndex);
                 System.arraycopy(bytes, 0, newBytes, bytes.length - arrayReaderIndex, arrayReaderIndex);
                 arrayReaderIndex = 0;
                 arrayWriterIndex = readableBytes();
-                 */
             }
             bytes = newBytes;
         }
