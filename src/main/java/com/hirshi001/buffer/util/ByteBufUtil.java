@@ -14,6 +14,7 @@ public class ByteBufUtil {
         byte[] bytes = msg.getBytes(charset);
         int size = bytes.length;
 
+        buf.ensureWritable(size + 4);
         buf.writeInt(size);
         buf.writeBytes(bytes);
     }
@@ -36,6 +37,7 @@ public class ByteBufUtil {
     public static void writeVarInt(ByteBuffer buffer, int value) {
         while (true) {
             if ((value & ~0x7F) == 0) {
+                buffer.ensureWritable(1);
                 buffer.writeByte(value);
                 return;
             } else {
