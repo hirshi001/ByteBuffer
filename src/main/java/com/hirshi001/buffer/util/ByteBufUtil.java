@@ -91,5 +91,9 @@ public class ByteBufUtil {
         return obj;
     }
 
+    public static Object test(){
+
+    }
+
 
 }
