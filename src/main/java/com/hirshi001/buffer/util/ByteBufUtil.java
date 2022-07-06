@@ -3,6 +3,7 @@ package com.hirshi001.buffer.util;
 
 import com.hirshi001.buffer.buffers.ByteBuffer;
 
+import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
@@ -57,6 +58,30 @@ public class ByteBufUtil {
             shift += 7;
         } while ((b & 0x80) != 0);
         return result;
+    }
+
+    public static void serialize(ByteBuffer buffer, Serializable obj) throws IOException {
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        ObjectOutputStream objectOutputStream = new ObjectOutputStream(bos);
+
+        objectOutputStream.writeObject(obj);
+
+        byte[] bytes = bos.toByteArray();
+
+        buffer.ensureWritable(bytes.length + 4);
+        buffer.writeInt(bytes.length);
+        buffer.writeBytes(bytes);
+    }
+
+    public static Object deserialize(ByteBuffer buffer) throws IOException, ClassNotFoundException {
+        int size = buffer.readInt();
+        byte[] bytes = new byte[size];
+        buffer.readBytes(bytes);
+
+        ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
+        ObjectInputStream objectInputStream = new ObjectInputStream(bis);
+
+        return objectInputStream.readObject();
     }
 
 
