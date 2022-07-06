@@ -65,12 +65,16 @@ public class ByteBufUtil {
         ObjectOutputStream objectOutputStream = new ObjectOutputStream(bos);
 
         objectOutputStream.writeObject(obj);
+        objectOutputStream.flush();
 
         byte[] bytes = bos.toByteArray();
 
         buffer.ensureWritable(bytes.length + 4);
         buffer.writeInt(bytes.length);
         buffer.writeBytes(bytes);
+
+        objectOutputStream.close();
+        bos.close();
     }
 
     public static Object deserialize(ByteBuffer buffer) throws IOException, ClassNotFoundException {
@@ -81,7 +85,10 @@ public class ByteBufUtil {
         ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
         ObjectInputStream objectInputStream = new ObjectInputStream(bis);
 
-        return objectInputStream.readObject();
+        Object obj = objectInputStream.readObject();
+        objectInputStream.close();
+        bis.close();
+        return obj;
     }
 
 
