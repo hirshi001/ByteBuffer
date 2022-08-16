@@ -7,6 +7,7 @@ A Java library for reading and writing binary data.
 * ArrayBackedBuffers and CircularArrayBuffers
 * Easy to use API
 * Easy to add your own implementation (e.g. for performance or to use native code)
+* No need to call `flip()` when switching between reading and writing
 
 ## How to use
 First create a BufferFactory.
@@ -26,4 +27,12 @@ ByteBuffer buffer5 = factory.wrap(new byte[5]{1,2,3,4,5});
 
 Then use the buffer.
 ```java
+for(int i=0;i<10;i++){
+    buffer.writeInt(i);
+}
+for(int i=0;i<10;i++){
+    System.out.println(buffer.readInt());
+}
 ```
+
+See Tests for more examples.
