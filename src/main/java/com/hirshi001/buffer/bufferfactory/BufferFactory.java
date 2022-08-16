@@ -25,6 +25,8 @@ public interface BufferFactory {
     public ByteBuffer wrap(byte[] bytes);
     public ByteBuffer wrap(byte[] bytes, int offset, int length);
 
+    public ByteBuffer synchronize(ByteBuffer buffer);
+
     public void recycle(ByteBuffer buffer);
 
     public ByteOrder defaultOrder();

@@ -12,6 +12,11 @@ public class ByteBufUtil {
     private static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
 
     public static void writeStringToBuf(Charset charset, String msg, ByteBuffer buf){
+        if(msg == null){
+            buf.ensureWritable(4);
+            buf.writeInt(-1);
+            return;
+        }
         byte[] bytes = msg.getBytes(charset);
         int size = bytes.length;
 
@@ -26,6 +31,8 @@ public class ByteBufUtil {
 
     public static String readStringFromBuf(Charset charset, ByteBuffer buf){
         int size = buf.readInt();
+        if(size == -1) return null;
+
         byte[] bytes = new byte[size];
         buf.readBytes(bytes);
         return new String(bytes, charset);
@@ -61,6 +68,11 @@ public class ByteBufUtil {
     }
 
     public static void serialize(ByteBuffer buffer, Serializable obj) throws IOException {
+        if(obj==null){
+            buffer.ensureWritable(4);
+            buffer.writeInt(-1);
+            return;
+        }
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         ObjectOutputStream objectOutputStream = new ObjectOutputStream(bos);
 
@@ -79,6 +91,8 @@ public class ByteBufUtil {
 
     public static Object deserialize(ByteBuffer buffer) throws IOException, ClassNotFoundException {
         int size = buffer.readInt();
+        if(size==-1) return null;
+
         byte[] bytes = new byte[size];
         buffer.readBytes(bytes);
 
@@ -90,10 +104,5 @@ public class ByteBufUtil {
         bis.close();
         return obj;
     }
-
-    public static Object test(){
-        return new Object();
-    }
-
 
 }
