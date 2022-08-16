@@ -1,5 +1,7 @@
 # ByteBuffer
-A Java library for reading and writing binary data.
+A Java library for reading and writing binary data.  
+Use Jitpack to download and install or use as a dependency.
+
 ## Features
 * Read and write primitive data types
 * Read and write strings
