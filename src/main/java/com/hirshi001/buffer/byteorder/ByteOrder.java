@@ -3,15 +3,6 @@ package com.hirshi001.buffer.byteorder;
 public enum ByteOrder {
 
     LITTLE_ENDIAN(){
-        @Override
-        public void writeByte(ByteWriter writer, byte b) {
-            writer.writeByte(b);
-        }
-
-        @Override
-        public byte readByte(ByteReader reader) {
-            return reader.readByte();
-        }
 
         @Override
         public void writeInt(ByteWriter writer, int i) {
@@ -73,16 +64,6 @@ public enum ByteOrder {
         }
 
         @Override
-        public void putByte(BytePutter putter, int index, byte b) {
-            putter.putByte(b, index);
-        }
-
-        @Override
-        public byte getByte(ByteGetter getter, int index) {
-            return getter.getByte(index);
-        }
-
-        @Override
         public void putInt(BytePutter putter, int index, int i) {
             putter.putByte((byte)(i), index);
             putter.putByte((byte)(i >>> 8), index + 1);
@@ -136,16 +117,6 @@ public enum ByteOrder {
     },
 
     BIG_ENDIAN(){
-        @Override
-        public void writeByte(ByteWriter writer, byte b) {
-            writer.writeByte(b);
-        }
-
-        @Override
-        public byte readByte(ByteReader reader) {
-            return reader.readByte();
-        }
-
         @Override
         public void writeInt(ByteWriter writer, int i) {
             //write int in big endian
@@ -205,16 +176,6 @@ public enum ByteOrder {
         }
 
         @Override
-        public void putByte(BytePutter putter, int index, byte b) {
-            putter.putByte(b, index);
-        }
-
-        @Override
-        public byte getByte(ByteGetter getter, int index) {
-            return getter.getByte(index);
-        }
-
-        @Override
         public void putInt(BytePutter putter, int index, int i) {
             putter.putByte((byte)(i >>> 24), index);
             putter.putByte((byte)(i >>> 16), index + 1);
@@ -267,10 +228,6 @@ public enum ByteOrder {
         }
     };
 
-    public abstract void writeByte(ByteWriter writer, byte b);
-
-    public abstract byte readByte(ByteReader reader);
-
     public abstract void writeInt(ByteWriter writer, int i);
 
     public abstract int readInt(ByteReader reader);
@@ -298,10 +255,6 @@ public enum ByteOrder {
     public double readDouble(ByteReader reader){
         return Double.longBitsToDouble(readLong(reader));
     }
-
-    public abstract void putByte(BytePutter putter, int index, byte b);
-
-    public abstract byte getByte(ByteGetter getter, int index);
 
     public abstract void putInt(BytePutter putter, int index, int i);
 

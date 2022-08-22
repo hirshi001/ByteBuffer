@@ -45,6 +45,31 @@ public class ByteBufferTest {
     }
 
     @Test
+    public void otherTypesTest(){
+        ByteBuffer buffer = bufferFactory.buffer(10);
+        buffer.writeInt(10);
+        buffer.writeInt(-10);
+        buffer.writeInt(261);
+        buffer.writeInt(-261);
+
+        buffer.writeInt(Integer.MAX_VALUE);
+        buffer.writeInt(Integer.MAX_VALUE/2);
+        buffer.writeInt(Integer.MIN_VALUE);
+        buffer.writeInt(Integer.MIN_VALUE/2);
+
+        assertEquals(10, buffer.readInt());
+        assertEquals(-10, buffer.readInt());
+        assertEquals(261, buffer.readInt());
+        assertEquals(-261, buffer.readInt());
+
+        assertEquals(Integer.MAX_VALUE, buffer.readInt());
+        assertEquals(Integer.MAX_VALUE/2, buffer.readInt());
+        assertEquals(Integer.MIN_VALUE, buffer.readInt());
+        assertEquals(Integer.MIN_VALUE/2, buffer.readInt());
+
+    }
+
+    @Test
     public void ByteBufferAutoResizeTest(){
         ByteBuffer buffer = bufferFactory.buffer(10);
         for(int i=0; i<100; i++){
@@ -54,6 +79,17 @@ public class ByteBufferTest {
 
         for(int i=0; i<100; i++){
             assertEquals(i, buffer.readByte());
+        }
+    }
+
+    @Test
+    public void WriteGetTest(){
+        ByteBuffer buffer = bufferFactory.buffer(10);
+        for(int i=0; i<10; i++){
+            buffer.writeByte(i);
+        }
+        for(int i=0; i<10; i++){
+            assertEquals(i, buffer.getByte(i));
         }
     }
 
@@ -87,6 +123,29 @@ public class ByteBufferTest {
         ByteBufUtil.writeVarInt(buffer, 9912);
 
         assertEquals(9912, ByteBufUtil.readVarInt(buffer));
+    }
+
+    @Test
+    public void BufferTransferTest(){
+        ByteBuffer buffer1 = bufferFactory.buffer(10);
+        ByteBuffer buffer2 = bufferFactory.buffer(10);
+        for(int i=0; i<10; i++){
+            buffer1.writeByte(i);
+        }
+        buffer2.writeBytes(buffer1);
+        assertEquals(10, buffer2.readableBytes());
+        assertEquals(0, buffer1.readableBytes());
+        for(int i=0; i<10; i++){
+            assertEquals(i, buffer2.readByte());
+        }
+    }
+
+    @Test
+    public void test128(){
+        ByteBuffer buffer = bufferFactory.buffer(10);
+        buffer.writeInt(128);
+        System.out.println(Arrays.toString(buffer.array()));
+        assertEquals(128, buffer.getInt(0));
     }
 
 

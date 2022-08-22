@@ -293,47 +293,37 @@ public abstract class AbstractByteBuffer implements ByteBuffer {
 
     @Override
     public ByteBuffer putInt(int i, int index) {
-        order.putInt(this, i, index);
-        putByte((byte) (i >> 24), index);
-        putByte((byte) (i >> 16), index + 1);
-        putByte((byte) (i >> 8), index + 2);
-        putByte((byte) i, index + 3);
+        order.putInt(this, index, i);
         return this;
     }
 
     @Override
     public ByteBuffer putLong(long l, int index) {
-        putByte((byte) (l >> 56), index);
-        putByte((byte) (l >> 48), index + 1);
-        putByte((byte) (l >> 40), index + 2);
-        putByte((byte) (l >> 32), index + 3);
-        putByte((byte) (l >> 24), index + 4);
-        putByte((byte) (l >> 16), index + 5);
-        putByte((byte) (l >> 8), index + 6);
-        putByte((byte) l, index + 7);
+        order.putLong(this, index, l);
         return this;
     }
 
     @Override
     public ByteBuffer putShort(int s, int index) {
-        putByte((byte) (s >> 8), index);
-        putByte((byte) s, index + 1);
+        order.putShort(this, index, s);
         return this;
     }
 
     @Override
     public ByteBuffer putDouble(double d, int index) {
-        return putLong(Double.doubleToLongBits(d), index);
+        order.putDouble(this, index, d);
+        return this;
     }
 
     @Override
     public ByteBuffer putFloat(float f, int index) {
-        return putInt(Float.floatToIntBits(f), index);
+        order.putFloat(this, index, f);
+        return this;
     }
 
     @Override
     public ByteBuffer putBoolean(boolean b, int index) {
-        putByte((byte) (b ? TRUE : FALSE), index);
+        putByte((byte)(b ? TRUE : FALSE), index);
         return this;
     }
 
@@ -344,31 +334,27 @@ public abstract class AbstractByteBuffer implements ByteBuffer {
 
     @Override
     public int getInt(int index) {
-        return (getByte(index) << 24) | (getByte(index + 1) << 16) | (getByte(index + 2) << 8) |
-                getByte(index + 3);
+        return order.getInt(this, index);
     }
 
     @Override
     public long getLong(int index) {
-        return ((long) getByte(index) << 56) | ((long) getByte(index + 1) << 48) |
-                ((long) getByte(index + 2) << 40) | ((long) getByte(index + 3) << 32) |
-                ((long) getByte(index + 4) << 24) | ((long) getByte(index + 5) << 16) |
-                ((long) getByte(index + 6) << 8) | getByte(index + 7);
+        return order.getLong(this, index);
     }
 
     @Override
     public short getShort(int index) {
-        return (short) ((getByte(index) << 8) | getByte(index + 1));
+        return order.getShort(this, index);
     }
 
     @Override
     public double getDouble(int index) {
-        return Double.longBitsToDouble(getLong(index));
+        return order.getDouble(this, index);
     }
 
     @Override
     public float getFloat(int index) {
-        return Float.intBitsToFloat(getInt(index));
+        return order.getFloat(this, index);
     }
 
     @Override

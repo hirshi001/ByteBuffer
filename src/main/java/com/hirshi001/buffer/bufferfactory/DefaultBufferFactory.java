@@ -4,6 +4,7 @@ package com.hirshi001.buffer.bufferfactory;
 import com.hirshi001.buffer.buffers.ArrayBackedByteBuffer;
 import com.hirshi001.buffer.buffers.ByteBuffer;
 import com.hirshi001.buffer.buffers.CircularArrayBackedByteBuffer;
+import com.hirshi001.buffer.buffers.SyncronizedBuffer;
 import com.hirshi001.buffer.byteorder.ByteOrder;
 
 import java.util.Comparator;
@@ -102,6 +103,11 @@ public class DefaultBufferFactory implements BufferFactory {
                 .order(byteOrder)
                 .writerIndex(offset + length)
                 .readerIndex(offset);
+    }
+
+    @Override
+    public ByteBuffer synchronize(ByteBuffer buffer) {
+        return new SyncronizedBuffer(buffer);
     }
 
 }

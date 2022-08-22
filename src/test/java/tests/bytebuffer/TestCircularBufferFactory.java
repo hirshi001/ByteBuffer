@@ -60,6 +60,11 @@ public class TestCircularBufferFactory implements BufferFactory {
     }
 
     @Override
+    public ByteBuffer synchronize(ByteBuffer buffer) {
+        return null;
+    }
+
+    @Override
     public void recycle(ByteBuffer buffer) {
 
     }
