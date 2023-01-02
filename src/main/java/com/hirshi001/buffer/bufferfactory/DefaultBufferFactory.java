@@ -7,9 +7,6 @@ import com.hirshi001.buffer.buffers.CircularArrayBackedByteBuffer;
 import com.hirshi001.buffer.buffers.SyncronizedBuffer;
 import com.hirshi001.buffer.byteorder.ByteOrder;
 
-import java.util.Comparator;
-import java.util.TreeSet;
-
 public class DefaultBufferFactory implements BufferFactory {
 
     private ByteOrder byteOrder = ByteOrder.BIG_ENDIAN;
